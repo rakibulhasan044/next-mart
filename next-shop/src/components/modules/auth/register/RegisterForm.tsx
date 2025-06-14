@@ -12,9 +12,13 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { registrationSchema } from "./registerValidation";
 
 const RegisterForm = () => {
-  const form = useForm();
+  const form = useForm({
+    resolver: zodResolver(registrationSchema)
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
