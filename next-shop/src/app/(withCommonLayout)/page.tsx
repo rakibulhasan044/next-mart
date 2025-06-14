@@ -1,10 +1,13 @@
-import { getCurrentUser } from "@/services/authService";
+"use client"
+
+import { useUser } from "@/context/userContext";
 
 
-const HomePage = async () => {
+const HomePage = () => {
 
-  const user = await getCurrentUser()
+  const user = useUser();
   console.log(user);
+
   return (
     <div>
       <h1>Welcome to NextMart home page</h1>
