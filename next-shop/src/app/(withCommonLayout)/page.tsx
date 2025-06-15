@@ -1,6 +1,6 @@
 "use client"
 
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/UserContext";
 
 
 const HomePage = () => {
