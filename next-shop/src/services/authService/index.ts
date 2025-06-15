@@ -3,7 +3,6 @@
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 import { jwtDecode } from "jwt-decode";
-
 export const registerUser = async (userData: FieldValues) => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user`, {
@@ -73,4 +72,8 @@ export const recaptchaTokenVerification = async (token: string) => {
   } catch (error: any) {
     return Error(error);
   }
+};
+
+export const logoutUser = async () => {
+  (await cookies()).delete("accessToken");
 };
