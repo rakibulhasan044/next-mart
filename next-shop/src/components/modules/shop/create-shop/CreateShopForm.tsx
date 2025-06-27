@@ -34,27 +34,18 @@ export default function CreateShopForm() {
       .split(",")
       .map((service: string) => service.trim())
       .filter((service: string) => service !== "");
+    console.log(servicesOffered);
 
     const modifiedData = {
       ...data,
       servicesOffered: servicesOffered,
-      establishedYear: Number(data?.establishedYear),
-    };
-
+      establishedYear: Number(data?.establishedYear)
+    }
+    console.log(modifiedData);
     try {
-      const formData = new FormData();
-      formData.append("data", JSON.stringify(modifiedData));
-      formData.append("logo", imageFiles[0] as File);
-
-      const res = await createShop(formData);
-
-      console.log(res);
-
-      if (res.success) {
-        toast.success(res.message);
-      }
-    } catch (err: any) {
-      console.error(err);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
