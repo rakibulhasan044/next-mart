@@ -8,7 +8,7 @@ const UserDashboard = () => {
         <div className="bg-muted aspect-video rounded-xl" />
         <div className="bg-muted aspect-video rounded-xl" />
       </div>
-      <div className="bg-muted min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+      <div className="bg-muted min-h-[100vh] rounded-xl mt-4" />
     </div>
   );
 };
