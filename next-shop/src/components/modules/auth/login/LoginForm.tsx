@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "./loginValidation";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginForm = () => {
   const form = useForm({
@@ -26,7 +27,9 @@ const LoginForm = () => {
   });
 
   const [recaptchaStatus, setRecaptchaStatus] = useState(false);
-
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirectPath")
+  const router = useRouter();
   const {
     formState: { isSubmitting },
   } = form;
@@ -34,7 +37,6 @@ const LoginForm = () => {
   const handleRecaptcha = async (value: string | null) => {
     try {
       const res = await recaptchaTokenVerification(value!);
-
       if (res.success) {
         setRecaptchaStatus(true);
       }
@@ -45,13 +47,15 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await loginUser(data);
-      console.log(data);
       if (res?.success) {
         toast.success(res?.message);
-        console.log(res?.message);
+        if(redirect) {
+          router.push(redirect)
+        } else {
+          router.push("/profile")
+        }
       } else {
         toast.error(res?.message);
-        console.log(res?.message);
       }
     } catch (error: any) {
       console.log(error);

@@ -16,19 +16,27 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { logoutUser } from "@/services/authService";
 import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
+import { usePathname, useRouter } from "next/navigation";
+import { protectedRoutes } from "@/constant";
 
 export default function Navbar() {
   const { user, setIsLoading } = useUser();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const handleLogout = () => {
     try {
       logoutUser();
       setIsLoading(true);
       toast.success("Logged out successfully");
+      if(protectedRoutes.some(route => pathname.match(route))) {
+        router.push("/")
+      }
     } catch (error: any) {
       toast.error(error?.message || "Failed to log out");
     }
   };
+
   return (
     <header className="border-b w-full">
       <div className="container flex justify-between items-center mx-auto h-16 px-3">
