@@ -33,10 +33,16 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Logo from "@/app/assets/svgs/Logo";
 import { Value } from "@radix-ui/react-select";
+import { IBrand, ICategory } from "@/types";
+import { getAllCategories } from "@/services/category";
+import { getAllBrands } from "@/services/Brand";
+import { ca } from "zod/v4/locales";
 
 export default function AddProductsForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
+  const [categories, setCategories] = useState<ICategory[] | []>([]);
+  const [brands, setBrands] = useState<IBrand[] | []>([]);
 
   const form = useForm({
     defaultValues: {
@@ -86,6 +92,19 @@ export default function AddProductsForm() {
 
   // console.log(specFields);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const [categoriesData, brandsData] = await Promise.all([
+        getAllCategories(),
+        getAllBrands(),
+      ]);
+
+      setCategories(categoriesData?.data);
+      setBrands(brandsData?.data);
+    };
+    fetchData();
+  }, []);
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const availableColors = data?.availableColors.map(
       (color: { value: string }) => color.value
@@ -101,7 +120,7 @@ export default function AddProductsForm() {
         (specification[item.key] = item.value)
     );
 
-    console.log({availableColors, keyFeatures, specification});
+    console.log({ availableColors, keyFeatures, specification });
     try {
       //   console.log(data);
     } catch (error) {}
@@ -160,18 +179,17 @@ export default function AddProductsForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Product Category" />
+                        <SelectValue placeholder="Select product category" />
                       </SelectTrigger>
                     </FormControl>
-                    {/* <SelectContent>
+                    <SelectContent>
                       {categories.map((category) => (
                         <SelectItem key={category?._id} value={category?._id}>
                           {category?.name}
                         </SelectItem>
                       ))}
-                    </SelectContent> */}
+                    </SelectContent>
                   </Select>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -191,13 +209,13 @@ export default function AddProductsForm() {
                         <SelectValue placeholder="Select Product Brand" />
                       </SelectTrigger>
                     </FormControl>
-                    {/* <SelectContent>
+                    <SelectContent>
                       {brands.map((brand) => (
                         <SelectItem key={brand?._id} value={brand?._id}>
                           {brand?.name}
                         </SelectItem>
                       ))}
-                    </SelectContent> */}
+                    </SelectContent>
                   </Select>
 
                   <FormMessage />
