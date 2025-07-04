@@ -29,20 +29,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { IBrand, ICategory } from "@/types";
+
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import Logo from "@/app/assets/svgs/Logo";
-import { Value } from "@radix-ui/react-select";
-import { IBrand, ICategory } from "@/types";
 import { getAllCategories } from "@/services/category";
 import { getAllBrands } from "@/services/Brand";
-import { ca } from "zod/v4/locales";
+import { addProduct } from "@/services/product";
+import Logo from "@/app/assets/svgs/Logo";
 
 export default function AddProductsForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
   const [categories, setCategories] = useState<ICategory[] | []>([]);
   const [brands, setBrands] = useState<IBrand[] | []>([]);
+
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -102,28 +104,58 @@ export default function AddProductsForm() {
       setCategories(categoriesData?.data);
       setBrands(brandsData?.data);
     };
+
     fetchData();
   }, []);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const availableColors = data?.availableColors.map(
+    const availableColors = data.availableColors.map(
       (color: { value: string }) => color.value
     );
 
-    const keyFeatures = data?.keyFeatures.map(
+    const keyFeatures = data.keyFeatures.map(
       (feature: { value: string }) => feature.value
     );
 
     const specification: { [key: string]: string } = {};
-    data?.specification.forEach(
+    data.specification.forEach(
       (item: { key: string; value: string }) =>
         (specification[item.key] = item.value)
     );
 
-    console.log({ availableColors, keyFeatures, specification });
+    // console.log({ availableColors, keyFeatures, specification });
+
+    const modifiedData = {
+      ...data,
+      availableColors,
+      keyFeatures,
+      specification,
+      price: parseFloat(data.price),
+      stock: parseInt(data.stock),
+      weight: parseFloat(data.stock),
+    };
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(modifiedData));
+
+    for (const file of imageFiles) {
+      formData.append("images", file);
+    }
+
+    console.log(formData);
+    console.log(modifiedData);
     try {
-      //   console.log(data);
-    } catch (error) {}
+      const res = await addProduct(formData);
+
+      if (res.success) {
+        toast.success(res.message);
+        router.push("/user/shop/products");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
   };
 
   return (
@@ -179,7 +211,7 @@ export default function AddProductsForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select product category" />
+                        <SelectValue placeholder="Select Product Category" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -190,6 +222,7 @@ export default function AddProductsForm() {
                       ))}
                     </SelectContent>
                   </Select>
+
                   <FormMessage />
                 </FormItem>
               )}
