@@ -75,7 +75,7 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
             title="View"
             onClick={() => handleView(row.original)}
           >
-            <Eye className="w-5 h-5" />
+            <Eye className="w-5 h-5 cursor-pointer" />
           </button>
 
           <button
@@ -87,7 +87,7 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
               )
             }
           >
-            <Edit className="w-5 h-5" />
+            <Edit className="w-5 h-5 cursor-pointer" />
           </button>
 
           <button
@@ -95,7 +95,7 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
             title="Delete"
             onClick={() => handleDelete(row.original._id)}
           >
-            <Trash className="w-5 h-5" />
+            <Trash className="w-5 h-5 cursor-pointer" />
           </button>
         </div>
       ),

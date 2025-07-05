@@ -1,6 +1,6 @@
 "use client";
 
-import Logo from "@/app/assets/svgs/Logo";
+import Logo from "@/assets/svgs/Logo";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,7 +28,7 @@ const LoginForm = () => {
 
   const [recaptchaStatus, setRecaptchaStatus] = useState(false);
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirectPath")
+  const redirect = searchParams.get("redirectPath");
   const router = useRouter();
   const {
     formState: { isSubmitting },
@@ -49,10 +49,10 @@ const LoginForm = () => {
       const res = await loginUser(data);
       if (res?.success) {
         toast.success(res?.message);
-        if(redirect) {
-          router.push(redirect)
+        if (redirect) {
+          router.push(redirect);
         } else {
-          router.push("/profile")
+          router.push("/profile");
         }
       } else {
         toast.error(res?.message);

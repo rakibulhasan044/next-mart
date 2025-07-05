@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import Logo from "@/app/assets/svgs/Logo";
+import Logo from "@/assets/svgs/Logo";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import { useState } from "react";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
@@ -38,19 +38,19 @@ export default function CreateShopForm() {
     const modifiedData = {
       ...data,
       servicesOffered: servicesOffered,
-      establishedYear: Number(data?.establishedYear)
-    }
+      establishedYear: Number(data?.establishedYear),
+    };
     try {
       const formData = new FormData();
-      formData.append("data", JSON.stringify(modifiedData))
+      formData.append("data", JSON.stringify(modifiedData));
       formData.append("logo", imageFiles[0] as File);
 
       const res = await createShop(formData);
 
       console.log(res);
-      if(res.success) {
+      if (res.success) {
         console.log(res);
-        toast.success(res.message)
+        toast.success(res.message);
       }
     } catch (error) {
       console.log(error);

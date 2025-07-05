@@ -2,7 +2,7 @@
 
 import { Heart, LogOut, ShoppingBag } from "lucide-react";
 import { Button } from "../ui/button";
-import Logo from "@/app/assets/svgs/Logo";
+import Logo from "@/assets/svgs/Logo";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -29,8 +29,8 @@ export default function Navbar() {
       logoutUser();
       setIsLoading(true);
       toast.success("Logged out successfully");
-      if(protectedRoutes.some(route => pathname.match(route))) {
-        router.push("/")
+      if (protectedRoutes.some((route) => pathname.match(route))) {
+        router.push("/");
       }
     } catch (error: any) {
       toast.error(error?.message || "Failed to log out");
@@ -62,9 +62,7 @@ export default function Navbar() {
           {user ? (
             <>
               <Link href="/create-shop">
-                <Button className="rounded-full">
-                  Create Shop
-                </Button>
+                <Button className="rounded-full">Create Shop</Button>
               </Link>
 
               <DropdownMenu>
