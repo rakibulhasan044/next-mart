@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import DiscountModal from "./DiscountModal";
+import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 
 const ManageProducts = ({ products }: { products: IProduct[] }) => {
   const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
@@ -42,10 +43,12 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => {
-            if(value){
+            if (value) {
               setSelectedIds((prev) => [...prev, row.original._id]);
             } else {
-              setSelectedIds(selectedIds.filter(id => id !== row.original._id));
+              setSelectedIds(
+                selectedIds.filter((id) => id !== row.original._id)
+              );
             }
             row.toggleSelected(!!value);
           }}
@@ -148,10 +151,16 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
           >
             Add Product <Plus />
           </Button>
-          <DiscountModal selectedIds={selectedIds} setSelectedIds={setSelectedIds} />
+          <DiscountModal
+            selectedIds={selectedIds}
+            setSelectedIds={setSelectedIds}
+          />
         </div>
       </div>
       <NMTable columns={columns} data={products || []} />
+      <div className="flex items-center justify-center">
+        <TablePagination />
+      </div>
     </div>
   );
 };
