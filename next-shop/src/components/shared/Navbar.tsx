@@ -38,11 +38,13 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b w-full">
+    <header className="border-b w-full sticky top-0 z-10">
       <div className="container flex justify-between items-center mx-auto h-16 px-3">
         <h1 className="text-2xl font-black flex items-center">
-          <Logo />
-          Next Mart
+          <Link href={"/"}>
+            <Logo />
+            Next Mart
+          </Link>
         </h1>
         <div className="max-w-md  flex-grow">
           <input
@@ -59,7 +61,7 @@ export default function Navbar() {
             <ShoppingBag />
           </Button>
 
-          {user ? (
+          {user?.email ? (
             <>
               <Link href="/create-shop">
                 <Button className="rounded-full">Create Shop</Button>
@@ -76,7 +78,9 @@ export default function Navbar() {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={`/${user?.role}/dashboard`}>Dashboard</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>MY Shop</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
