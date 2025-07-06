@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+"use client";
+import { useState } from "react";
 import { Button } from "../../button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const TablePagination = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+import { usePathname, useRouter } from "next/navigation";
 
-  const totalPage = 10;
+const TablePagination = ({totalPage}: {totalPage: number}) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const router = useRouter();
+  const pathName = usePathname();
+
+
 
   const handlePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+      router.push(`${pathName}?page=${currentPage - 1}`);
     }
   };
 
   const handleNext = () => {
     if (currentPage < totalPage) {
       setCurrentPage(currentPage + 1);
+      router.push(`${pathName}?page=${currentPage + 1}`);
     }
   };
   return (
@@ -32,7 +39,10 @@ const TablePagination = () => {
 
       {[...Array(totalPage)].map((_, index) => (
         <Button
-          onClick={() => setCurrentPage(index + 1)}
+          onClick={() => {
+            setCurrentPage(index + 1);
+            router.push(`${pathName}?page=${index + 1}`);
+          }}
           key={index}
           variant={currentPage === index + 1 ? "default" : "outline"}
           size={"sm"}

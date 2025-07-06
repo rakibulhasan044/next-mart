@@ -1,7 +1,7 @@
 "use client";
 
 import { NMTable } from "@/components/ui/core/NMTable/index";
-import { IProduct } from "@/types";
+import { IMeta, IProduct } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
@@ -12,11 +12,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import DiscountModal from "./DiscountModal";
 import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 
-const ManageProducts = ({ products }: { products: IProduct[] }) => {
+const ManageProducts = ({ products, meta }: { products: IProduct[]; meta: IMeta }) => {
   const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
   const router = useRouter();
 
-  console.log(selectedIds);
 
   const handleView = (product: IProduct) => {
     console.log("Viewing product:", product);
@@ -159,7 +158,7 @@ const ManageProducts = ({ products }: { products: IProduct[] }) => {
       </div>
       <NMTable columns={columns} data={products || []} />
       <div className="flex items-center justify-center">
-        <TablePagination />
+        <TablePagination totalPage={meta?.totalPage} />
       </div>
     </div>
   );
