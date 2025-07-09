@@ -63,6 +63,11 @@ const cartSlice = createSlice({
     updateShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
     },
+    clearCat: (state) => {
+      state.products = [];
+      state.city = "";
+      state.shippingAddress = "";
+    },
   },
 });
 
@@ -75,16 +80,25 @@ export const orderSelector = (state: RootState) => {
     products: state.cart.products.map((product) => ({
       product: product._id,
       quantity: product.orderQuantity,
+      color: "White",
     })),
-    shippingAddressSelector: `${state.cart.shippingAddress} - ${state.cart.city}`,
+    shippingAddress: `${state.cart.shippingAddress} - ${state.cart.city}`,
     paymentMethod: "Online",
   };
 };
 
 export const shippingCostSelector = (state: RootState) => {
-  if (state.cart.city && state.cart.city === "Dhaka" && state.cart.products.length > 0) {
+  if (
+    state.cart.city &&
+    state.cart.city === "Dhaka" &&
+    state.cart.products.length > 0
+  ) {
     return 50;
-  } else if (state.cart.city && state.cart.city !== "Dhaka" && state.cart.products.length > 0) {
+  } else if (
+    state.cart.city &&
+    state.cart.city !== "Dhaka" &&
+    state.cart.products.length > 0
+  ) {
     return 100;
   } else {
     return 0;
@@ -94,8 +108,8 @@ export const shippingCostSelector = (state: RootState) => {
 export const grandTotalSelector = (state: RootState) => {
   const subTotal = subTotalSelector(state);
   const shippingCost = shippingCostSelector(state);
-  return subTotal + shippingCost
-}
+  return subTotal + shippingCost;
+};
 
 export const citySelector = (state: RootState) => {
   return state.cart.city;
@@ -119,5 +133,6 @@ export const {
   removeProduct,
   updateCity,
   updateShippingAddress,
+  clearCat
 } = cartSlice.actions;
 export default cartSlice.reducer;
