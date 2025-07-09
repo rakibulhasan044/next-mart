@@ -25,15 +25,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Providers>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.className} antialiased`}
-        >
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.className} antialiased`}
+      >
+        <Providers>
           <Toaster richColors position="top-center" />
           {children}
-        </body>
-      </html>
-    </Providers>
+        </Providers>
+      </body>
+    </html>
   );
 }
+
+
+// export default function RootLayout({ children }: { children: React.ReactNode }) {
+//   return (
+//     <html lang="en" suppressHydrationWarning>
+//       <body className={`${geistSans.variable} ${geistMono.className} antialiased`}>
+//         <Providers>
+//           <Toaster richColors position="top-center" />
+//           {children}
+//         </Providers>
+//       </body>
+//     </html>
+//   );
+// }
+
